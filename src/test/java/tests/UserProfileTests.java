@@ -93,7 +93,7 @@ public class UserProfileTests extends BaseTest{
         step("Проверка сообщения об успешном обновлении профиля", () ->
                 assertThat(responseProfile.getMessage()).isEqualTo("Profile updated successful"));
         step("Проверка обновления имени пользователя", () ->
-                assertThat(responseProfile.getData().getName()).isNotEqualTo(testData.userName));
+                assertThat(responseProfile.getData().getName()).isEqualTo(testData.userName));
         step("Проверка обновления поля phone", () ->
                 assertThat(responseProfile.getData().getPhone()).isEqualTo(testData.userPhone));
         step("Проверка обновления поля company", () ->

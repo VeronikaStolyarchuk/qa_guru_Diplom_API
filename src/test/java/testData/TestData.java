@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class TestData {
     Faker faker = new Faker(new Locale("ru_RU"));
-    public String userName = faker.name().firstName();
+    public String userName = faker.name().lastName();
     public String userEmail = faker.internet().emailAddress();
     public String password = faker.internet().password();
     public String loginIncorrectPassword = faker.internet().password();
