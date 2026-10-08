@@ -69,6 +69,7 @@ Allure Report используется для отображения резул�
 <p align="center">
 <img title="Allure Overview" src="media/screens/allure-report.png">
 <img title="Allure Overview" src="media/screens/allure.png">
+<img title="Testops- dashboard" src="media/screens/allure-dashboard.png"><br>
 </p>
 
 ## <img width="30" style="vertical-align:middle" title="Allure TestOps" src="media/logo/allureTO.svg"> Система управления тест-кейсами [TestOps](https://allure.qa.guru/launch/56573)
@@ -78,5 +79,12 @@ Allure Report используется для отображения резул�
 <p align="center">
 <img title="Testops" src="media/screens/AllureTestOps.png"><br>
 <img title="Testops-suites" src="media/screens/Allure-Results.png"><br>
-<img title="Testops- dashboard" src="media/screens/allure-dashboard.png"><br>
+</p>
+---
+## <img width="30" style="vertical-align:middle" title="Telegram" src="media/logo/telegram.svg"> Получение уведомлений в Telegram с использованием бота
+
+После сборки бот в Telegram автоматически отправляет в целевой чат отчёт о результатах прогона тестов.
+
+<p align="center">
+<img title="Telegram" src="media/screens/telegram.png"><br>
 </p>
