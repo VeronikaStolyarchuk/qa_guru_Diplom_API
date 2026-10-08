@@ -54,7 +54,7 @@ clean test
 
 <a id="сборка-в-jenkins"></a>
 
-## <img width="4%" style="vertical-align:middle" title="Jenkins" src="media/logo/jenkins.svg"> [Сборка в Jenkins](https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomUI/)
+## <img width="4%" style="vertical-align:middle" title="Jenkins" src="media/logo/jenkins.svg"> [Сборка в Jenkins](https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomAPI)
 
 Для запуска сборки необходимо перейти в раздел <code>Собрать с параметрами</code> и нажать кнопку <code>Собрать</code>.
 <p align="center">
@@ -63,14 +63,14 @@ clean test
 После завершения сборки в блоке «История сборок» рядом с номером сборки отображаются значки Allure Report и Allure TestOps. При нажатии на значок Allure Report открывается отчёт по тестам, а при клике на Allure TestOps — страница с тестовой документацией.
 ____
 <a id="allureReport"></a>
-## <img width="30" style="vertical-align:middle" title="Allure Report" src="media/logo/allure.svg"> </a> Пример <a target="_blank" href="https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomUI/12/allure/"> Allure-отчета </a>
+## <img width="30" style="vertical-align:middle" title="Allure Report" src="media/logo/allure.svg"> </a> Пример <a target="_blank" href="https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomAPI/8/allure/"> Allure-отчета </a>
 Allure Report используется для отображения результатов выполнения тестов, шагов тестирования и вложений.
 <p align="center">
 <img title="Allure Overview" src="media/screens/allure-report.png">
 <img title="Allure Overview" src="media/screens/allure.png">
 </p>
 
-## <img width="30" style="vertical-align:middle" title="Allure TestOps" src="media/logo/allureTO.svg"> Система управления тест-кейсами [TestOps](https://allure.qa.guru/launch/56408)
+## <img width="30" style="vertical-align:middle" title="Allure TestOps" src="media/logo/allureTO.svg"> Система управления тест-кейсами [TestOps](https://allure.qa.guru/launch/56573)
 
 Система TestOps предназначена для управления тест‑кейсами. Функционал включает отображение тест‑кейсов и информацию о запусках с актуальными статусами.
 
