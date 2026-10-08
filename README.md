@@ -25,3 +25,67 @@
 <a href="https://www.jenkins.io/"><img src="media/logo/jenkins.svg" width="50" height="50"  alt="Jenkins"/></a>
 <a href="https://www.atlassian.com/ru/software/jira"><img src="media/logo/jira.svg" width="50" height="50"  alt="Atlassian Jira"/></a>
 </p>
+
+## Реализованные автотесты
+
+- Успешная регистрация пользователя и валидация ответа.
+- Регистрация с некорректными данными (проверка обработки ошибок).
+- Получение данных профиля по ID.
+- Обновление профиля (PATCH) и проверка изменений.
+- Генерация тестовых данных через JavaFaker (имя, email, пароль).
+
+## Особенности реализации
+
+- **Структурированные шаги Allure.** Каждый значимый этап теста оформлен через `Allure.step` — в отчёте видно, какой именно шаг прошёл или упал.
+- **Переиспользуемые спецификации.** Для валидации статусов и структуры ответов используются спецификации RestAssured (`responseRegistrationSpec201`, `responseLoginSpec200` и т. д.).
+- **Динамические тестовые данные.** Данные для тестов (имя, email, пароль, заметки) генерируются через `JavaFaker` и вынесены в отдельный класс `TestData`, чтобы избежать хардкода и дублирования.
+- **Сквозные сценарии.** Некоторые тесты включают последовательность действий (логин → создание заметки → удаление), что позволяет проверять бизнес‑логику целиком.
+## Запуск автотестов:
+
+### Локальный запуск:
+```
+gradle clean test
+```
+### Удалённый запуск через Jenkins:
+```
+clean test
+-Denvironment=$ENVIRONMENT
+```
+
+<a id="сборка-в-jenkins"></a>
+
+## <img width="4%" style="vertical-align:middle" title="Jenkins" src="media/logo/jenkins.svg"> [Сборка в Jenkins](https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomAPI)
+
+Для запуска сборки необходимо перейти в раздел <code>Собрать с параметрами</code> и нажать кнопку <code>Собрать</code>.
+<p align="center">
+<img title="Jenkins Build" src="media/screens/jenkins.png">
+</p>
+После завершения сборки в блоке «История сборок» рядом с номером сборки отображаются значки Allure Report и Allure TestOps. При нажатии на значок Allure Report открывается отчёт по тестам, а при клике на Allure TestOps — страница с тестовой документацией.
+
+____
+<a id="allureReport"></a>
+## <img width="30" style="vertical-align:middle" title="Allure Report" src="media/logo/allure.svg"> </a> Пример <a target="_blank" href="https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomAPI/8/allure/"> Allure-отчета </a>
+Allure Report используется для отображения результатов выполнения тестов, шагов тестирования и вложений.
+<p align="center">
+<img title="Allure Overview" src="media/screens/allure-report.png">
+<img title="Allure Overview" src="media/screens/allure.png">
+<img title="Testops- dashboard" src="media/screens/allure-dashboard.png"><br>
+</p>
+
+## <img width="30" style="vertical-align:middle" title="Allure TestOps" src="media/logo/allureTO.svg"> Система управления тест-кейсами [TestOps](https://allure.qa.guru/launch/56573)
+
+Система TestOps предназначена для управления тест‑кейсами. Функционал включает отображение тест‑кейсов и информацию о запусках с актуальными статусами.
+
+<p align="center">
+<img title="Testops" src="media/screens/AllureTestOps.png"><br>
+<img title="Testops-suites" src="media/screens/Allure-Results.png"><br>
+</p>
+
+---
+## <img width="30" style="vertical-align:middle" title="Telegram" src="media/logo/telegram.svg"> Получение уведомлений в Telegram с использованием бота
+
+После сборки бот в Telegram автоматически отправляет в целевой чат отчёт о результатах прогона тестов.
+
+<p align="center">
+<img title="Telegram" src="media/screens/telegram.png"><br>
+</p>
