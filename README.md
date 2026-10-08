@@ -1,5 +1,5 @@
-<p align="center">
 # Проект по автоматизации тестирования API 
+<p align="center">
   [practice.expandtesting.com](https://practice.expandtesting.com/)
 </p>
 
