@@ -2,7 +2,7 @@
 
   <h2>
     <p align="center">
-<a href="https://practice.expandtesting.com/">practice.expandtesting.com</a>
+<a href="https://practice.expandtesting.com/" target="_blank" style="color: #1BA8A8; text-decoration: none; font-weight: bold;">practice.expandtesting.com</a>
       </p>
     </h2>
 
