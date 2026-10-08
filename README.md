@@ -61,3 +61,20 @@ clean test
 <img title="Jenkins Build" src="media/screens/jenkins.png">
 </p>
 После завершения сборки в блоке «История сборок» рядом с номером сборки отображаются значки Allure Report и Allure TestOps. При нажатии на значок Allure Report открывается отчёт по тестам, а при клике на Allure TestOps — страница с тестовой документацией.
+____
+<a id="allureReport"></a>
+## <img width="30" style="vertical-align:middle" title="Allure Report" src="media/logo/allure.svg"> </a> Пример <a target="_blank" href="https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomUI/12/allure/"> Allure-отчета </a>
+Allure Report используется для отображения результатов выполнения тестов, шагов тестирования и вложений.
+<p align="center">
+<img title="Allure Overview" src="media/screens/allure-report.png">
+<img title="Allure Overview" src="media/screens/allure.png">
+</p>
+
+## <img width="30" style="vertical-align:middle" title="Allure TestOps" src="media/logo/allureTO.svg"> Система управления тест-кейсами [TestOps](https://allure.qa.guru/launch/56408)
+
+Система TestOps предназначена для управления тест‑кейсами. Функционал включает отображение тест‑кейсов и информацию о запусках с актуальными статусами.
+
+<p align="center">
+<img title="Testops" src="media/screens/AllureTestOps.png"><br>
+<img title="Testops-suites" src="media/screens/Allure-Results.png"><br>
+</p>
