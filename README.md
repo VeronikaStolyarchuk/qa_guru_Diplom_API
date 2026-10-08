@@ -3,8 +3,9 @@
 </div>
   <h2>
     <p align="center">
-      [<img title="Site Screen" src="media/screens/sitesscreen.png">](https://practice.expandtesting.com/)
-<a href="https://practice.expandtesting.com/" target="_blank" style="color: #1BA8A8; font-weight: bold;">practice.expandtesting.com</a>
+     <a href="https://practice.expandtesting.com/" target="_blank" rel="noopener noreferrer">
+    <img src="media/screens/sitesscreen.png" alt="Site Screen" title="Site Screen" style="max-width: 100%; height: auto;">
+  </a>
       </p>
     </h2>
 
