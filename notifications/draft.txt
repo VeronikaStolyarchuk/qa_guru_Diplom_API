@@ -1,0 +1,7 @@
+8610996333:AAHzoh1wX-DIww6EdevbHUvseblemCL0u90
+
+https://api.telegram.org/bot8610996333:AAHzoh1wX-DIww6EdevbHUvseblemCL0u90/getUpdates
+
+-1004371008532
+
+java "-DconfigFile=notifications/config.json" -jar ./notifications/allure-notifications-5.0.8.jar
