@@ -78,4 +78,5 @@ Allure Report используется для отображения резул�
 <p align="center">
 <img title="Testops" src="media/screens/AllureTestOps.png"><br>
 <img title="Testops-suites" src="media/screens/Allure-Results.png"><br>
+<img title="Testops- dashboard" src="media/screens/allure-dashboard.png"><br>
 </p>
