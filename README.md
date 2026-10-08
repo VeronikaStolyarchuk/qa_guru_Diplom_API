@@ -50,6 +50,8 @@ gradle clean test
 ```
 clean test
 -Denvironment=$ENVIRONMENT
+```
+
 <a id="сборка-в-jenkins"></a>
 
 ## <img width="4%" style="vertical-align:middle" title="Jenkins" src="media/logo/jenkins.svg"> [Сборка в Jenkins](https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomUI/)
