@@ -3,7 +3,7 @@
 </div>
   <h2>
     <p align="center">
-     <a href="https://practice.expandtesting.com/" target="_blank" rel="noopener noreferrer">
+     <a href="https://practice.expandtesting.com/notes/api/api-docs/" target="_blank" rel="noopener noreferrer">
     <img src="media/screens/sitesscreen.png" alt="Site Screen" title="Site Screen" style="max-width: 100%; height: auto;">
   </a>
       </p>
