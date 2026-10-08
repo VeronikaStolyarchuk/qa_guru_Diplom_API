@@ -3,7 +3,7 @@
 </div>
   <h2>
     <p align="center">
-      <img title="Jenkins Build" src="media/screens/jenkins.png">
+      <img title="Jenkins Build" src="media/screens/sitescreen.png">
 <a href="https://practice.expandtesting.com/" target="_blank" style="color: #1BA8A8; font-weight: bold;">practice.expandtesting.com</a>
       </p>
     </h2>
