@@ -1,6 +1,6 @@
 # Проект по автоматизации тестирования API 
 <p align="center">
-  [practice.expandtesting.com](https://practice.expandtesting.com/)
+  <a href="https://practice.expandtesting.com/">practice.expandtesting.com</a>
 </p>
 
 ## Про проект
