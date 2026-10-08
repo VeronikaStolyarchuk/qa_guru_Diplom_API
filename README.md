@@ -1,4 +1,4 @@
-# Автоматизация тестирования сайта [Русский букет](https://rus-buket.ru)
+# Проект по автоматизации тестирования API [practice.expandtesting.com](https://practice.expandtesting.com/)
 
 <p align="center">
   <img src="media/logo/rus-buket.svg" width="550" alt="Русский букет">
