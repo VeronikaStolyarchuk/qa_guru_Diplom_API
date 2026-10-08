@@ -40,7 +40,6 @@
 - **Переиспользуемые спецификации.** Для валидации статусов и структуры ответов используются спецификации RestAssured (`responseRegistrationSpec201`, `responseLoginSpec200` и т. д.).
 - **Динамические тестовые данные.** Данные для тестов (имя, email, пароль, заметки) генерируются через `JavaFaker` и вынесены в отдельный класс `TestData`, чтобы избежать хардкода и дублирования.
 - **Сквозные сценарии.** Некоторые тесты включают последовательность действий (логин → создание заметки → удаление), что позволяет проверять бизнес‑логику целиком.
-- 
 ## Запуск автотестов:
 
 ### Локальный запуск:
@@ -51,3 +50,12 @@ gradle clean test
 ```
 clean test
 -Denvironment=$ENVIRONMENT
+<a id="сборка-в-jenkins"></a>
+
+## <img width="4%" style="vertical-align:middle" title="Jenkins" src="media/logo/jenkins.svg"> [Сборка в Jenkins](https://jenkins.qa.guru/job/41_VeronikaStolyarchuk_guru-qa_DiplomUI/)
+
+Для запуска сборки необходимо перейти в раздел <code>Собрать с параметрами</code> и нажать кнопку <code>Собрать</code>.
+<p align="center">
+<img title="Jenkins Build" src="media/screens/jenkins.png">
+</p>
+После завершения сборки в блоке «История сборок» рядом с номером сборки отображаются значки Allure Report и Allure TestOps. При нажатии на значок Allure Report открывается отчёт по тестам, а при клике на Allure TestOps — страница с тестовой документацией.
