@@ -5,32 +5,24 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import models.ErrorResponseModel;
 import models.users.login.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import testData.TestData;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.BaseSpec.requestSpec;
-import static specs.users.UserLoginSpecifications.*;
 
 @Owner("Veronika Stolyarchuk")
 @Epic("Api testing")
 @Feature("Login tests")
 public class LoginTests extends BaseTest{
 
+    @DisplayName("Успешная авторизация пользователя")
     @Test
     public void successfulLoginTest(){
         LoginBodyModel userData = new LoginBodyModel(
                 TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос на авторизацию", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого id", () ->
                 assertThat(response.getData().getId()).isNotNull());
@@ -40,17 +32,11 @@ public class LoginTests extends BaseTest{
                 assertThat(response.getMessage()).isEqualTo("Login successful"));
     }
 
+    @DisplayName("Проверка авторизации пользователя с пустыми полями")
     @Test
     public void loginWithEmptyFieldsErrorTest(){
 
-        ErrorResponseModel response = step("Отправить POST запрос на авторизацию с пустыми полями", () ->
-                given(requestSpec)
-                        .body("{}")
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec400)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel response = api.loginApi.loginWithEmptyFields();
 
         step("Проверка статуса", () ->
                 assertThat(response.isSuccess()).isFalse());
@@ -58,19 +44,13 @@ public class LoginTests extends BaseTest{
                 assertThat(response.getMessage()).isEqualTo("A valid email address is required"));
     }
 
+    @DisplayName("Проверка авторизации пользователя с невалидным паролем")
     @Test
     public void loginWithIncorrectPasswordErrorTest(){
         LoginBodyModel userData = new LoginBodyModel(
                 TestData.LOGIN_EMAIL, testData.loginIncorrectPassword);
 
-        ErrorResponseModel response = step("Отправить POST запрос на авторизацию с некорректным паролем", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec401)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel response = api.loginApi.loginWithIncorrectPassword(userData);
 
         step("Проверка статуса", () ->
                 assertThat(response.isSuccess()).isFalse());

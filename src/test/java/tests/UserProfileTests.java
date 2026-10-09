@@ -6,33 +6,24 @@ import io.qameta.allure.Owner;
 import models.ErrorResponseModel;
 import models.users.login.*;
 import models.users.profile.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import testData.TestData;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.BaseSpec.*;
-import static specs.users.UserLoginSpecifications.*;
-import static specs.users.UserProfileSpecifications.*;
 
 @Owner("Veronika Stolyarchuk")
 @Epic("Api testing")
 @Feature("UserProfile tests")
 public class UserProfileTests extends BaseTest{
 
+    @DisplayName("Получение профиля пользователя")
     @Test
     public void getUserProfileByTokenTest(){
         LoginBodyModel userData = new LoginBodyModel(
                 TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого id", () ->
                 assertThat(response.getData().getId()).isNotNull());
@@ -42,13 +33,7 @@ public class UserProfileTests extends BaseTest{
                 String token = response.getData().getToken();
                 String userId = response.getData().getId();
 
-        SuccessfulProfileBodyModel responseProfile = step("Отправить GET запрос на получение профиля", () ->
-                given(requestSpecWithToken(token))
-                        .when()
-                        .get("/users/profile")
-                        .then()
-                        .spec(responseProfileSpec200)
-                        .extract().as(SuccessfulProfileBodyModel.class));
+        SuccessfulProfileBodyModel responseProfile = api.profileApi.getUserProfile(token);
 
         step("Проверка сообщения об успешном получении профиля", () ->
                 assertThat(responseProfile.getMessage()).isEqualTo("Profile successful"));
@@ -58,6 +43,7 @@ public class UserProfileTests extends BaseTest{
                 assertThat(responseProfile.getData().getEmail()).isEqualTo(TestData.LOGIN_EMAIL));
         }
 
+    @DisplayName("Обновление профиля пользователя")
     @Test
     public void updateUserProfileTest(){
         LoginBodyModel userData = new LoginBodyModel(
@@ -65,14 +51,7 @@ public class UserProfileTests extends BaseTest{
         UpdateProfileBodyModel userUpdateData = new UpdateProfileBodyModel(
                 testData.userName, testData.userPhone, testData.userCompany);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого id", () ->
                 assertThat(response.getData().getId()).isNotNull());
@@ -81,14 +60,7 @@ public class UserProfileTests extends BaseTest{
 
         String token = response.getData().getToken();
 
-        SuccessfulProfileBodyModel responseProfile = step("Отправить PATCH запрос на обновление профиля", () ->
-                given(requestSpecWithToken(token))
-                        .body(userUpdateData)
-                        .when()
-                        .patch("/users/profile")
-                        .then()
-                        .spec(responseProfileSpec200)
-                        .extract().as(SuccessfulProfileBodyModel.class));
+        SuccessfulProfileBodyModel responseProfile = api.profileApi.updateUserProfile(token, userUpdateData);
 
         step("Проверка сообщения об успешном обновлении профиля", () ->
                 assertThat(responseProfile.getMessage()).isEqualTo("Profile updated successful"));
@@ -100,33 +72,20 @@ public class UserProfileTests extends BaseTest{
                 assertThat(responseProfile.getData().getCompany()).isEqualTo(testData.userCompany));
     }
 
+    @DisplayName("Проверка обновления профиля пользователя с пустыми полями")
     @Test
     public void updateProfileWithEmptyRequiredFieldWrongTest(){
         LoginBodyModel userData = new LoginBodyModel(
                 TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого токена", () ->
                 assertThat(response.getData().getToken()).isNotNull());
 
         String token = response.getData().getToken();
 
-        ErrorResponseModel responseProfile = step("Отправить PATCH запрос на обновление профиля с пустыми полями", () ->
-                given(requestSpecWithToken(token))
-                        .body("{}")
-                        .when()
-                        .patch("/users/profile")
-                        .then()
-                        .spec(responseProfileSpec400)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel responseProfile = api.profileApi.updateProfileWithEmptyRequiredField(token);
 
         step("Проверка статуса", () ->
                 assertThat(responseProfile.isSuccess()).isFalse());
@@ -134,19 +93,13 @@ public class UserProfileTests extends BaseTest{
                 assertThat(responseProfile.getMessage()).isEqualTo("User name must be between 4 and 30 characters"));
     }
 
+    @DisplayName("Проверка обновления профиля пользователя без токена")
     @Test
     public void updateProfileWithoutTokenWrongTest(){
         UpdateProfileBodyModel userUpdateData = new UpdateProfileBodyModel(
                 testData.userName, testData.userPhone, testData.userCompany);
 
-        ErrorResponseModel response = step("Отправить PATCH запрос на обновление профиля без токена", () ->
-                given(requestSpec)
-                        .body(userUpdateData)
-                        .when()
-                        .patch("/users/profile")
-                        .then()
-                        .spec(responseProfileSpec401)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel response = api.profileApi.updateProfileWithoutToken(userUpdateData);
 
         step("Проверка статуса", () ->
                 assertThat(response.isSuccess()).isFalse());

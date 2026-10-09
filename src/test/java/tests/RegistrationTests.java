@@ -5,31 +5,23 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import models.ErrorResponseModel;
 import models.users.registration.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.BaseSpec.requestSpec;
-import static specs.users.UserRegistrationSpecifications.*;
 
 @Owner("Veronika Stolyarchuk")
 @Epic("Api testing")
 @Feature("Registration tests")
 public class RegistrationTests extends BaseTest{
 
+    @DisplayName("Успешная регистрация пользователя")
     @Test
     public void successfulRegistrationTest(){
         RegistrationBodyModel userData = new RegistrationBodyModel(
                 testData.userName, testData.userEmail, testData.password);
 
-        SuccessfulRegistrationBodyModel response = step("Отправить POST запрос на регистрацию", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/register")
-                        .then()
-                        .spec(responseRegistrationSpec201)
-                        .extract().as(SuccessfulRegistrationBodyModel.class));
+        SuccessfulRegistrationBodyModel response = api.registrationApi.registrationUser(userData);
 
         step("Проверка получения непустого id", () ->
                 assertThat(response.getData().getId()).isNotNull());
@@ -37,17 +29,11 @@ public class RegistrationTests extends BaseTest{
                 assertThat(response.getMessage()).isEqualTo("User account created successfully"));
     }
 
+    @DisplayName("Проверка регистрации пользователя с пустыми полями")
     @Test
     public void registrationWithEmptyFieldsErrorTest(){
 
-        ErrorResponseModel response = step("Отправить POST запрос на регистрацию с пустыми полями", () ->
-                given(requestSpec)
-                        .body("{}")
-                        .when()
-                        .post("/users/register")
-                        .then()
-                        .spec(responseRegistrationSpec400)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel response = api.registrationApi.registrationWithEmptyFields();
 
         step("Проверка статуса", () ->
                 assertThat(response.isSuccess()).isFalse());
@@ -55,31 +41,18 @@ public class RegistrationTests extends BaseTest{
                 assertThat(response.getMessage()).isEqualTo("User name must be between 4 and 30 characters"));
     }
 
+    @DisplayName("Проверка регистрации существующего пользователя")
     @Test
     public void registrationExistingUserErrorTest(){
         RegistrationBodyModel userData = new RegistrationBodyModel(
                 testData.userName, testData.userEmail, testData.password);
 
-        SuccessfulRegistrationBodyModel firstResponse = step("Отправить POST запрос на регистрацию", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/register")
-                        .then()
-                        .spec(responseRegistrationSpec201)
-                        .extract().as(SuccessfulRegistrationBodyModel.class));
+        SuccessfulRegistrationBodyModel firstResponse = api.registrationApi.registrationUser(userData);
 
         step("Проверка получения имени пользователя", () ->
                 assertThat(firstResponse.getData().getName()).isEqualTo(testData.userName));
 
-        ErrorResponseModel secondResponse = step("Отправить повторный POST запрос на регистрацию", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/register")
-                        .then()
-                        .spec(responseRegistrationSpec409)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel secondResponse = api.registrationApi.registrationExistingUser(userData);
 
         step("Проверка статуса", () ->
                 assertThat(secondResponse.isSuccess()).isFalse());

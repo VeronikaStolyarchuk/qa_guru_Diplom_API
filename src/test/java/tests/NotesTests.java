@@ -6,20 +6,18 @@ import io.qameta.allure.Owner;
 import models.ErrorResponseModel;
 import models.notes.*;
 import models.users.login.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import testData.TestData;
 import static io.qameta.allure.Allure.step;
-import static io.restassured.RestAssured.given;
 import static org.assertj.core.api.Assertions.assertThat;
-import static specs.BaseSpec.*;
-import static specs.notes.NotesSpecifications.*;
-import static specs.users.UserLoginSpecifications.*;
 
 @Owner("Veronika Stolyarchuk")
 @Epic("Api testing")
 @Feature("Notes tests")
 public class NotesTests extends BaseTest{
 
+    @DisplayName("Создание заметки")
     @Test
     public void createNotesTest(){
         LoginBodyModel userData = new LoginBodyModel(
@@ -27,14 +25,7 @@ public class NotesTests extends BaseTest{
         CreateNotesBodyModel notesData = new CreateNotesBodyModel(
                 testData.noteTitle, testData.noteDescription, testData.noteCategory);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого токена", () ->
                 assertThat(response.getData().getToken()).isNotNull());
@@ -44,14 +35,7 @@ public class NotesTests extends BaseTest{
                 String token = response.getData().getToken();
                 String userId = response.getData().getId();
 
-        SuccessfulCreateNotesBodyModel responseNote = step("Отправить POST запрос на создание заметки", () ->
-                given(requestSpecWithToken(token))
-                        .body(notesData)
-                        .when()
-                        .post("/notes")
-                        .then()
-                        .spec(responseNotesSpec200)
-                        .extract().as(SuccessfulCreateNotesBodyModel.class));
+        SuccessfulCreateNotesBodyModel responseNote = api.notesApi.createNotes(token, notesData);
 
         step("Проверка сообщения об успешном создании заметки", () ->
                 assertThat(responseNote.getMessage()).isEqualTo("Note successfully created"));
@@ -61,33 +45,21 @@ public class NotesTests extends BaseTest{
                 assertThat(responseNote.getData().getTitle()).isEqualTo(testData.noteTitle));
         }
 
+    @DisplayName("Получение заметки по несуществующему id")
     @Test
     public void getNoteByNotExistingNoteIdTest(){
         LoginBodyModel userData = new LoginBodyModel(
                 TestData.LOGIN_EMAIL, TestData.LOGIN_PASSWORD);
         String noteId = testData.notExistingNoteId;
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого токена", () ->
                 assertThat(response.getData().getToken()).isNotNull());
 
         String token = response.getData().getToken();
 
-        ErrorResponseModel responseNote = step("Отправить GET запрос на получение заметки по несуществующему id", () ->
-                given(requestSpecWithToken(token))
-                        .when()
-                        .get("/notes/"+noteId)
-                        .then()
-                        .spec(responseNotesSpec400)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel responseNote = api.notesApi.getNoteByNotExistingNoteId(token, noteId);
 
         step("Проверка статуса", () ->
                 assertThat(responseNote.isSuccess()).isFalse());
@@ -95,6 +67,7 @@ public class NotesTests extends BaseTest{
                 assertThat(responseNote.getMessage()).isEqualTo("Note ID must be a valid ID"));
     }
 
+    @DisplayName("Удаление заметки")
     @Test
     public void deleteNoteTest(){
         LoginBodyModel userData = new LoginBodyModel(
@@ -102,28 +75,14 @@ public class NotesTests extends BaseTest{
         CreateNotesBodyModel notesData = new CreateNotesBodyModel(
                 testData.noteTitle, testData.noteDescription, testData.noteCategory);
 
-        SuccessfulLoginBodyModel response = step("Отправить POST запрос и получить токен", () ->
-                given(requestSpec)
-                        .body(userData)
-                        .when()
-                        .post("/users/login")
-                        .then()
-                        .spec(responseLoginSpec200)
-                        .extract().as(SuccessfulLoginBodyModel.class));
+        SuccessfulLoginBodyModel response = api.loginApi.loginUser(userData);
 
         step("Проверка получения непустого токена", () ->
                 assertThat(response.getData().getToken()).isNotNull());
 
         String token = response.getData().getToken();
 
-        SuccessfulCreateNotesBodyModel responseNote = step("Отправить POST запрос на создание заметки", () ->
-                given(requestSpecWithToken(token))
-                        .body(notesData)
-                        .when()
-                        .post("/notes")
-                        .then()
-                        .spec(responseNotesSpec200)
-                        .extract().as(SuccessfulCreateNotesBodyModel.class));
+        SuccessfulCreateNotesBodyModel responseNote = api.notesApi.createNotes(token, notesData);
 
         step("Проверка сообщения об успешном создании заметки", () ->
                 assertThat(responseNote.getMessage()).isEqualTo("Note successfully created"));
@@ -132,13 +91,7 @@ public class NotesTests extends BaseTest{
 
         String noteId = responseNote.getData().getId();
 
-        ErrorResponseModel responseDeleteNote = step("Отправить DELETE запрос на удаление заметки", () ->
-                given(requestSpecWithToken(token))
-                        .when()
-                        .delete("/notes/"+ noteId)
-                        .then()
-                        .spec(responseDeleteNotesSpec200)
-                        .extract().as(ErrorResponseModel.class));
+        ErrorResponseModel responseDeleteNote = api.notesApi.deleteNote(token, noteId);
 
         step("Проверка статуса", () ->
                 assertThat(responseDeleteNote.isSuccess()).isTrue());
